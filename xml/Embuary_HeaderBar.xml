@@ -91,7 +91,7 @@
 						<visible>![[Container.Content(movies) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(videos) | Container.Content(files) | Container.Content(episodes)] + !String.IsEqual(control.getlabel(10),$LOCALIZE[16100]) + Window.IsVisible(MyVideoNav.xml) + Control.IsEnabled(10) + !String.IsEmpty(Control.getLabel(10)) + !$EXP[InfoDialogActive]]</visible>
 					</control>
 				</control>
-				<control type="grouplist" id="6666">
+				<!-- <control type="grouplist" id="6666">
 					<visible>!Window.IsVisible(loginscreen) + !$EXP[InfoDialogActive]</visible>
 					<defaultcontrol always="true">6600</defaultcontrol>
 					<centerleft>50%</centerleft>
@@ -106,8 +106,8 @@
 					<onright>6667</onright>
 					<onback condition="Window.IsVisible(addonsettings)">1100</onback>
 					<include>$PARAM[content]</include>
-				</control>
-				<control type="grouplist" id="6667">
+				</control> -->
+				<control type="grouplist" id="6666">
 					<include>Animation_ScrollbarIsVisible</include>
 					<top>0</top>
 					<height>58</height>
@@ -116,7 +116,7 @@
 					<defaultcontrol always="true">6668</defaultcontrol>
 					<itemgap>15</itemgap>
 					<align>right</align>
-					<onleft>6666</onleft>
+					<onleft>900</onleft>
 					<ondown>SetFocus($PARAM[id])</ondown>
 					<onback condition="Window.IsVisible(addonsettings)">1100</onback>
 					<!-- buttons -->
