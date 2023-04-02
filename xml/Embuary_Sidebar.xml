@@ -245,10 +245,17 @@
 									<property name="forced_icon">true</property>
 									<visible>System.HasAddon(plugin.video.embycon)</visible>
 								</item>
-								<item>
+								<!-- <item>
 									<label>$LOCALIZE[33060]</label>
 									<icon>&#xf425;</icon>
 									<onclick>ActivateWindow(shutdownmenu)</onclick>
+									<property name="forced_icon">true</property>
+								</item> -->
+								<item>
+									<label>$LOCALIZE[13012]</label>
+									<icon>&#xf206;</icon>
+									<onclick>Quit()</onclick>
+									<visible>System.Platform.Android | [System.ShowExitButton + [!Skin.HasSetting(HidePowerExit) | Window.IsVisible(loginscreen)]]</visible>
 									<property name="forced_icon">true</property>
 								</item>
 							</content>
