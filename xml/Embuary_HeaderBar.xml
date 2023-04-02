@@ -6,7 +6,7 @@
 		<param name="auto_hide">true</param>
 		<param name="hide_header">false</param>
 		<param name="header_label">$VAR[ContainerContentPrefix]$VAR[ContainerContent][LIGHT]$VAR[ContainerCountLabel,[COLOR text_header_sublabel]  |  ,[/COLOR]][/LIGHT]</param>
-		<param name="content">HeaderDefault</param>
+		<!-- <param name="content">HeaderDefault</param> -->
 		<definition>
 			<!-- Top bar -->
 			<control type="group">
