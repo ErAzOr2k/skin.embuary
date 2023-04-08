@@ -1543,216 +1543,519 @@
 	</include>
 	<!-- Fake mini epg -->
 	<include name="MiniEPG">
-		<control type="group">
-			<!-- headlines -->
-			<control type="group">
-				<bottom>383</bottom>
-				<height>30</height>
-				<!-- channel layout -->
-				<control type="group">
-					<width>395</width>
-					<control type="label">
-						<height>30</height>
-						<font>Med20</font>
-						<label>$INFO[VideoPlayer.ChannelGroup]</label>
-						<aligny>center</aligny>
-						<textoffsetx>25</textoffsetx>
-					</control>
-				</control>
-				<control type="group">
-					<left>395</left>
-					<!-- on now -->
-					<control type="group">
-						<width>50%</width>
-						<control type="label">
-							<left>25</left>
-							<height>30</height>
-							<font>Med20</font>
-							<label>$LOCALIZE[31346]</label>
-							<aligny>center</aligny>
-						</control>
-						<control type="label">
-							<right>25</right>
-							<height>30</height>
-							<font>Med20</font>
-							<label>$LOCALIZE[19127]</label>
-							<aligny>center</aligny>
-							<align>right</align>
-						</control>
-					</control>
-					<!-- next up  -->
-					<control type="group">
-						<right>0</right>
-						<width>50%</width>
-						<control type="label">
-							<left>25</left>
-							<height>30</height>
-							<font>Med20</font>
-							<label>$LOCALIZE[31012]</label>
-							<aligny>center</aligny>
-						</control>
-						<control type="label">
-							<right>25</right>
-							<height>30</height>
-							<font>Med20</font>
-							<label>$LOCALIZE[19127]</label>
-							<aligny>center</aligny>
-							<align>right</align>
-						</control>
-					</control>
-				</control>
-			</control>
-			<!-- list -->
-			<control type="list" id="11">
-				<bottom>30</bottom>
-				<height>332</height>
-				<orientation>vertical</orientation>
-				<onleft>PreviousChannelGroup</onleft>
-				<onright>NextChannelGroup</onright>
-				<itemlayout height="83">
-					<include>MiniEPGLayout</include>
-				</itemlayout>
-				<focusedlayout height="83">
-					<include content="MiniEPGLayout">
-						<param name="focused" value="true"/>
-					</include>
-				</focusedlayout>
-			</control>
-			<!-- grid -->
-			<control type="image">
-				<texture colordiffuse="grid_border">common/white.jpg</texture>
-				<bottom>360</bottom>
-				<height>2</height>
-			</control>
-			<control type="image">
-				<texture colordiffuse="grid_border">common/white.jpg</texture>
-				<bottom>30</bottom>
-				<height>2</height>
-			</control>
-			<!-- fake focus -->
-			<control type="group">
-				<animation effect="slide" end="0,-83" time="0" condition="Container(11).Row(2)">Conditional</animation>
-				<animation effect="slide" end="0,-166" time="0" condition="Container(11).Row(1)">Conditional</animation>
-				<animation effect="slide" end="0,-249" time="0" condition="Container(11).Row(0)">Conditional</animation>
-				<bottom>12</bottom>
-				<left>395</left>
-				<height>101</height>
-				<control type="group">
-					<width>50%</width>
-					<control type="image">
-						<left>-12</left>
-						<right>-10</right>
-						<top>-7</top>
-						<height>105</height>
-						<texture border="20,20,20,20" colordiffuse="$VAR[AccentColor]">items/focus.png</texture>
-						<aspectratio>stretch</aspectratio>
-					</control>
-				</control>
-			</control>
-		</control>
-	</include>
-	<include name="MiniEPGLayout">
-		<param name="focused">false</param>
+		<param name="id">$PARAM[id]</param>
+		<param name="mainlabel">$VAR[MainListLabel]</param>
+		<param name="sublabel">$VAR[SubListLabel]</param>
+		<param name="thumblabel">$VAR[MainListLabel]</param>
+		<param name="thumbmainlabel">$VAR[ThumbMainListLabel]</param>
+		<param name="thumbsublabel">$VAR[ThumbSubListLabel]</param>
+		<param name="rightlabel">$VAR[RightListLabel]</param>
+		<param name="rightlabel2">$VAR[RightListLabel2]</param>
 		<definition>
-			<!-- channel layout -->
 			<control type="group">
-				<width>395</width>
-				<control type="image">
-					<width>395</width>
-					<height>83</height>
-					<texture border="3,3,3,3" colordiffuse="grid_border">views/guide/epg_tile.png</texture>
-				</control>
+				<!-- <include>Visible_OpenClose</include> -->
+				<visible>Control.IsVisible($PARAM[id])</visible>
+				<!-- Header -->
 				<control type="label">
-					<left>25</left>
-					<width>50</width>
-					<height>81</height>
-					<aligny>center</aligny>
-					<font>Reg22</font>
-					<label>$INFO[ListItem.ChannelNumberLabel]</label>
+					<top>26</top>
+					<height>120</height>
+					<font>Med40</font>
+					<label>$INFO[VideoPlayer.ChannelGroup,,] ($INFO[Container(11).NumItems] $LOCALIZE[19019])</label>
+					<align>center</align>
+					<aligny>top</aligny>
+				</control>			
+				<!-- List -->
+				<control id="$PARAM[id]" type="fixedlist">
+					<visible>$EXP[ListViewVisible]</visible>
+					<animation effect="slide" time="0" end="0,-120" condition="!Container.HasParent + [Integer.IsEqual(Container($PARAM[id]).NumItems,6) | Integer.IsEqual(Container($PARAM[id]).NumItems,5)]">Conditional</animation>
+					<animation effect="slide" time="0" end="0,-240" condition="!Container.HasParent + [Integer.IsEqual(Container($PARAM[id]).NumItems,4) | Integer.IsEqual(Container($PARAM[id]).NumItems,3)]">Conditional</animation>
+					<animation effect="slide" time="0" end="0,-360" condition="!Container.HasParent + [Integer.IsEqual(Container($PARAM[id]).NumItems,2) | Integer.IsEqual(Container($PARAM[id]).NumItems,1)]">Conditional</animation>
+					<animation effect="slide" time="0" end="0,-120" condition="Container.HasParent + [Integer.IsEqual(Container($PARAM[id]).NumItems,5) | Integer.IsEqual(Container($PARAM[id]).NumItems,4)]">Conditional</animation>
+					<animation effect="slide" time="0" end="0,-240" condition="Container.HasParent + [Integer.IsEqual(Container($PARAM[id]).NumItems,3) | Integer.IsEqual(Container($PARAM[id]).NumItems,2)]">Conditional</animation>
+					<animation effect="slide" time="0" end="0,-360" condition="Container.HasParent + [Integer.IsEqual(Container($PARAM[id]).NumItems,1) | Integer.IsEqual(Container($PARAM[id]).NumItems,0)]">Conditional</animation>
+					<left>660</left>
+					<top>100</top>
+					<onright>NextChannelGroup</onright>
+					<onleft>PreviousChannelGroup</onleft>
+					<defaultcontrol always="true">0</defaultcontrol>
+					<focusposition>4</focusposition>
+					<movement>4</movement>
+					<orientation>vertical</orientation>
+					<viewtype label="535">list</viewtype>
+					<pagecontrol>17</pagecontrol>
+					<include>ScrollTime</include>
+					<preloaditems>4</preloaditems>
+					<itemlayout height="120" width="1229">
+						<control type="group">							
+							<left>70</left>
+							<right>70</right>
+							<include content="MiniEPGLayout">
+								<param name="id">$PARAM[id]</param>
+								<param name="mainlabel">$PARAM[mainlabel]</param>
+								<param name="sublabel">$PARAM[sublabel]</param>
+								<param name="rightlabel">$PARAM[rightlabel]</param>
+								<param name="rightlabel2">$PARAM[rightlabel2]</param>
+							</include>
+						</control>
+					</itemlayout>
+					<focusedlayout height="120" width="1229">
+						<include content="SetPropertyOnFocus">
+							<param name="id" value="$PARAM[id]"/>
+						</include>
+						<control type="group">
+							<left>70</left>
+							<right>70</right>
+							<include content="MiniEPGLayout">
+								<param name="focused" value="true"/>
+								<param name="id">$PARAM[id]</param>
+								<param name="mainlabel">$PARAM[mainlabel]</param>
+								<param name="sublabel">$PARAM[sublabel]</param>
+								<param name="rightlabel">$PARAM[rightlabel]</param>
+								<param name="rightlabel2">$PARAM[rightlabel2]</param>
+							</include>
+						</control>
+					</focusedlayout>
 				</control>
-				<control type="label">
-					<left>78</left>
-					<right>120</right>
-					<height>81</height>
-					<aligny>center</aligny>
-					<font>Reg22</font>
-					<label>$INFO[ListItem.ChannelName]</label>
-				</control>
-				<control type="image">
-					<right>10</right>
-					<width>100</width>
-					<height>81</height>
-					<texture background="true">$INFO[ListItem.Icon]</texture>
-					<aspectratio align="right">keep</aspectratio>
-					<bordersize>10</bordersize>
-				</control>
-			</control>
-			<!-- current programme -->
-			<control type="group">
-				<left>395</left>
+				<!-- side info panel -->
 				<control type="group">
-					<width>50%</width>
-					<control type="image">
-						<height>83</height>
-						<texture colordiffuse="cc282828">common/white.jpg</texture>
-						<include>FakeProgressAnimation</include>
-					</control>
-					<control type="image">
-						<height>83</height>
-						<texture border="3,3,3,3" colordiffuse="grid_border">views/guide/epg_tile.png</texture>
-					</control>
-					<control type="label">
-						<textoffsetx>25</textoffsetx>
-						<width>75%</width>
-						<height>81</height>
-						<aligny>center</aligny>
-						<font>Reg22</font>
-						<selectedcolor>text_white</selectedcolor>
-						<label fallback="19055">$INFO[ListItem.Title]</label>
-					</control>
-					<control type="label">
-						<right>0</right>
-						<textoffsetx>25</textoffsetx>
-						<width>25%</width>
-						<height>81</height>
-						<aligny>center</aligny>
-						<align>right</align>
-						<font>Reg22</font>
-						<selectedcolor>text_white</selectedcolor>
-						<label>$INFO[ListItem.EndTime]</label>
-					</control>
-				</control>
-				<control type="group">
-					<right>0</right>
-					<width>50%</width>
-					<control type="image">
-						<height>83</height>
-						<texture border="3,3,3,3" colordiffuse="grid_border">views/guide/epg_tile.png</texture>
-					</control>
-					<control type="label">
-						<textoffsetx>25</textoffsetx>
-						<width>75%</width>
-						<height>81</height>
-						<aligny>center</aligny>
-						<font>Reg22</font>
-						<selectedcolor>text_white</selectedcolor>
-						<label fallback="19055">$INFO[ListItem.NextTitle]</label>
-					</control>
-					<control type="label">
-						<right>0</right>
-						<textoffsetx>25</textoffsetx>
-						<width>25%</width>
-						<height>81</height>
-						<aligny>center</aligny>
-						<align>right</align>
-						<font>Reg22</font>
-						<selectedcolor>text_white</selectedcolor>
-						<label>$INFO[ListItem.NextEndTime]</label>
+					<left>20</left>
+					<top>120</top>
+					<width>690</width>
+					<control type="group">
+						<top>119</top>
+						<bottom>120</bottom>
+						<centerleft>50%</centerleft>
+						<width>590</width>
+						<!-- auto thumb -->
+						<control type="group">
+							<control type="group">
+								<control type="image">
+									<top>-4</top>
+									<left>-4</left>
+									<width>598</width>
+									<height>340</height>
+									<aspectratio align="center" aligny="center">keep</aspectratio>
+									<texture>$VAR[IconLandscape]</texture>
+									<bordersize>4</bordersize>
+									<bordertexture colordiffuse="thumb_background" border="4">items/shadow3.png</bordertexture>
+									<visible>$EXP[HasArt]</visible>
+								</control>
+								<control type="image">
+									<top>-4</top>
+									<left>-4</left>
+									<width>598</width>
+									<height>340</height>
+									<aspectratio align="center" aligny="center">keep</aspectratio>
+									<texture colordiffuse="text_white">$INFO[ListItem.Icon]</texture>
+									<bordersize>75</bordersize>
+									<bordertexture colordiffuse="thumb_background_fallback_secondary" border="4">items/shadow3.png</bordertexture>
+									<visible>!$EXP[HasArt]</visible>
+								</control>
+								<control type="group">
+									<width>590</width>
+									<height>332</height>
+									<include>ListitemOverlay</include>
+								</control>
+							</control>
+						</control>
+						<!-- desc -->
+						<include content="StaticLabels">
+							<param name="top">348</param>
+							<param name="width">590</param>
+							<param name="mainlabel">$PARAM[thumbmainlabel]</param>
+							<param name="sublabel">$PARAM[thumbsublabel]</param>
+						</include>
+						<!-- buttons -->
+						<control type="grouplist" id="100">
+							<visible>Window.IsVisible(MyPlaylist.xml)</visible>
+							<top>431</top>
+							<height>75</height>
+							<orientation>horizontal</orientation>
+							<itemgap>5</itemgap>
+							<onright>50</onright>
+							<onleft>900</onleft>
+							<align>center</align>
+							<control type="button" id="8">
+								<include>LightGreyButton</include>
+								<label>$LOCALIZE[15067]</label>
+								<onclick>close</onclick>
+								<visible>false</visible>
+							</control>
+							<control type="button" id="101">
+								<include>LightGreyButton</include>
+								<label>$VAR[PartyModeButton]</label>
+								<onclick condition="MusicPartyMode.Enabled">Playercontrol(stop)</onclick>
+								<onclick condition="!MusicPartyMode.Enabled">Playercontrol(partymode(music))</onclick>
+								<onclick>close</onclick>
+								<visible>Window.IsVisible(musicplaylist) + String.IsEqual(ListItemAbsolute(0).DBtype,song)</visible>
+							</control>
+							<control type="button" id="21">
+								<include>LightGreyButton</include>
+								<label>$LOCALIZE[190]</label>
+								<visible>!MusicPartyMode.Enabled | Window.IsVisible(videoplaylist)</visible>
+							</control>
+							<control type="button" id="22">
+								<include>LightGreyButton</include>
+								<label>$LOCALIZE[192]</label>
+								<onclick>close</onclick>
+								<visible>!MusicPartyMode.Enabled | Window.IsVisible(videoplaylist)</visible>
+							</control>
+						</control>
+						<!-- progress -->
+						<include condition="!Window.IsVisible(MyPlaylist.xml)" content="Progress">
+							<param name="top" value="425"/>
+							<param name="width" value="590"/>
+							<param name="height" value="5"/>
+							<param name="bgcolor" value="ff515151"/>
+						</include>
+						<!-- plot -->
+						<control type="textbox">
+							<top>510</top>
+							<bottom>0</bottom>
+							<align>justify</align>
+							<aligny>top</aligny>
+							<label>$VAR[ListViewPlot]</label>
+							<font>Light24</font>
+							<visible>Window.IsVisible(MyPlaylist.xml)</visible>
+						</control>
+						<control type="textbox">
+							<top>435</top>
+							<bottom>5</bottom>
+							<align>justify</align>
+							<aligny>top</aligny>
+							<label>$VAR[ListViewPlot]</label>
+							<font>Light24</font>
+							<visible>!Window.IsVisible(MyPlaylist.xml)</visible>
+							<visible>![String.StartsWith(ListItem.Path,pvr://channels) + Integer.IsGreater(ListItem.Progress,0)] + ![!String.StartsWith(ListItem.Path,pvr://channels) + Integer.IsGreater(ListItem.PercentPlayed,0)]</visible>
+						</control>
+						<control type="textbox">
+							<top>445</top>
+							<bottom>0</bottom>
+							<align>justify</align>
+							<aligny>top</aligny>
+							<label>$VAR[ListViewPlot]</label>
+							<font>Light24</font>
+							<visible>!Window.IsVisible(MyPlaylist.xml)</visible>
+							<visible>[String.StartsWith(ListItem.Path,pvr://channels) + Integer.IsGreater(ListItem.Progress,0)] | [!String.StartsWith(ListItem.Path,pvr://channels) + Integer.IsGreater(ListItem.PercentPlayed,0)]</visible>
+						</control>
 					</control>
 				</control>
 			</control>
 		</definition>
 	</include>
+	<!-- Fake mini epg -->
+	<!-- <include name="MiniEPG"> -->
+		<!-- <control type="group"> -->
+			<!-- <!-- headlines --> -->
+			<!-- <control type="group"> -->
+				<!-- <bottom>383</bottom> -->
+				<!-- <height>30</height> -->
+				<!-- <!-- channel layout --> -->
+				<!-- <control type="group"> -->
+					<!-- <width>395</width> -->
+					<!-- <control type="label"> -->
+						<!-- <height>30</height> -->
+						<!-- <font>Med20</font> -->
+						<!-- <label>$INFO[VideoPlayer.ChannelGroup]</label> -->
+						<!-- <aligny>center</aligny> -->
+						<!-- <textoffsetx>25</textoffsetx> -->
+					<!-- </control> -->
+				<!-- </control> -->
+				<!-- <control type="group"> -->
+					<!-- <left>395</left> -->
+					<!-- <!-- on now --> -->
+					<!-- <control type="group"> -->
+						<!-- <width>50%</width> -->
+						<!-- <control type="label"> -->
+							<!-- <left>25</left> -->
+							<!-- <height>30</height> -->
+							<!-- <font>Med20</font> -->
+							<!-- <label>$LOCALIZE[31346]</label> -->
+							<!-- <aligny>center</aligny> -->
+						<!-- </control> -->
+						<!-- <control type="label"> -->
+							<!-- <right>25</right> -->
+							<!-- <height>30</height> -->
+							<!-- <font>Med20</font> -->
+							<!-- <label>$LOCALIZE[19127]</label> -->
+							<!-- <aligny>center</aligny> -->
+							<!-- <align>right</align> -->
+						<!-- </control> -->
+					<!-- </control> -->
+					<!-- <!-- next up  --> -->
+					<!-- <control type="group"> -->
+						<!-- <right>0</right> -->
+						<!-- <width>50%</width> -->
+						<!-- <control type="label"> -->
+							<!-- <left>25</left> -->
+							<!-- <height>30</height> -->
+							<!-- <font>Med20</font> -->
+							<!-- <label>$LOCALIZE[31012]</label> -->
+							<!-- <aligny>center</aligny> -->
+						<!-- </control> -->
+						<!-- <control type="label"> -->
+							<!-- <right>25</right> -->
+							<!-- <height>30</height> -->
+							<!-- <font>Med20</font> -->
+							<!-- <label>$LOCALIZE[19127]</label> -->
+							<!-- <aligny>center</aligny> -->
+							<!-- <align>right</align> -->
+						<!-- </control> -->
+					<!-- </control> -->
+				<!-- </control> -->
+			<!-- </control> -->
+			<!-- <!-- list --> -->
+			<!-- <control type="list" id="11"> -->
+				<!-- <bottom>30</bottom> -->
+				<!-- <height>332</height> -->
+				<!-- <orientation>vertical</orientation> -->
+				<!-- <onleft>PreviousChannelGroup</onleft> -->
+				<!-- <onright>NextChannelGroup</onright> -->
+				<!-- <itemlayout height="83"> -->
+					<!-- <include>MiniEPGLayout</include> -->
+				<!-- </itemlayout> -->
+				<!-- <focusedlayout height="83"> -->
+					<!-- <include content="MiniEPGLayout"> -->
+						<!-- <param name="focused" value="true"/> -->
+					<!-- </include> -->
+				<!-- </focusedlayout> -->
+			<!-- </control> -->
+			<!-- <!-- grid --> -->
+			<!-- <control type="image"> -->
+				<!-- <texture colordiffuse="grid_border">common/white.jpg</texture> -->
+				<!-- <bottom>360</bottom> -->
+				<!-- <height>2</height> -->
+			<!-- </control> -->
+			<!-- <control type="image"> -->
+				<!-- <texture colordiffuse="grid_border">common/white.jpg</texture> -->
+				<!-- <bottom>30</bottom> -->
+				<!-- <height>2</height> -->
+			<!-- </control> -->
+			<!-- <!-- fake focus --> -->
+			<!-- <control type="group"> -->
+				<!-- <animation effect="slide" end="0,-83" time="0" condition="Container(11).Row(2)">Conditional</animation> -->
+				<!-- <animation effect="slide" end="0,-166" time="0" condition="Container(11).Row(1)">Conditional</animation> -->
+				<!-- <animation effect="slide" end="0,-249" time="0" condition="Container(11).Row(0)">Conditional</animation> -->
+				<!-- <bottom>12</bottom> -->
+				<!-- <left>395</left> -->
+				<!-- <height>101</height> -->
+				<!-- <control type="group"> -->
+					<!-- <width>50%</width> -->
+					<!-- <control type="image"> -->
+						<!-- <left>-12</left> -->
+						<!-- <right>-10</right> -->
+						<!-- <top>-7</top> -->
+						<!-- <height>105</height> -->
+						<!-- <texture border="20,20,20,20" colordiffuse="$VAR[AccentColor]">items/focus.png</texture> -->
+						<!-- <aspectratio>stretch</aspectratio> -->
+					<!-- </control> -->
+				<!-- </control> -->
+			<!-- </control> -->
+		<!-- </control> -->
+	<!-- </include> -->	
+	<include name="MiniEPGLayout">
+		<param name="focused">false</param>
+		<param name="mainlabel">$VAR[MainListLabel]</param>
+		<param name="sublabel">$VAR[SubListLabel]</param>
+		<param name="rightlabel">$VAR[RightListLabel]</param>
+		<param name="rightlabel2">$VAR[RightListLabel2]</param>
+		<definition>
+			<control type="group">
+				<include content="Animation_FocusBounceList">
+					<param name="id" value="$PARAM[id]"/>
+				</include>
+				<control type="group">
+					<visible>$PARAM[focused] + Control.HasFocus($PARAM[id])</visible>
+					<control type="image">
+						<top>6</top>
+						<bottom>6</bottom>
+						<left>-12</left>
+						<right>-11</right>
+						<texture colordiffuse="thumb_background">common/white.jpg</texture>
+						<aspectratio>stretch</aspectratio>
+					</control>
+					<control type="image">
+						<left>-25</left>
+						<right>-24</right>
+						<top>-2</top>
+						<bottom>-12</bottom>
+						<texture border="20,20,20,20" colordiffuse="$VAR[AccentColor]">items/focus.png</texture>
+						<aspectratio>stretch</aspectratio>
+						<include>Animation_FocusTextureFade</include>
+					</control>
+				</control>
+				<control type="group">
+					<visible>[Player.HasMedia + String.IsEqual(ListItem.Title,Player.Title)] | ListItem.IsSelected</visible>					
+					<control type="group">
+						<top>10</top>
+						<control type="label">
+							<width>68</width>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>Reg24</font>
+							<label>[B]$INFO[ListItem.ChannelNumberLabel][/B]</label>
+						</control>
+						<control type="label">
+							<left>100</left>
+							<width>815</width>
+							<align>left</align>
+							<aligny>top</aligny>
+							<font>Reg24</font>						
+							<label>$INFO[ListItem.Label][CR][B]$INFO[ListItem.Title][/B]</label>
+						</control>
+					</control>
+					<control type="group">
+						<top>70</top>
+						<left>100</left>						
+						<control type="label">
+							<align>left</align>
+							<font>Reg24</font>						
+							<label>$INFO[ListItem.StartTime]</label>
+						</control>
+						<include condition="!Window.IsVisible(MyPlaylist.xml)" content="Progress">
+							<param name="left" value="80"/>
+							<param name="top" value="22"/>
+							<param name="width" value="650"/>
+							<param name="height" value="5"/>
+							<param name="bgcolor" value="ff515151"/>
+						</include>
+						<control type="label">
+							<left>750</left>
+							<font>Reg24</font>						
+							<label>$INFO[ListItem.EndTime]</label>
+						</control>
+					</control>
+				</control>
+				<control type="group">	
+					<top>10</top>
+					<left>985</left>
+					<control type="image">
+						<width>100</width>
+						<height>100</height>
+						<texture>DefaultIconError.png</texture>
+						<aspectratio aligny="center" align="center">keep</aspectratio>
+						<visible>String.IsEmpty(ListItem.Icon) + !$EXP[HasArt]</visible>
+					</control>
+					<control type="image">
+						<width>100</width>
+						<height>100</height>
+						<texture background="true">$VAR[IconListView]</texture>
+						<aspectratio aligny="center" align="center">keep</aspectratio>
+						<visible>$EXP[HasArt]</visible>
+					</control>
+					<control type="image">
+						<width>100</width>
+						<height>100</height>
+						<texture colordiffuse="text_white" background="true">$VAR[IconListView]</texture>
+						<aspectratio aligny="center" align="center">keep</aspectratio>
+						<visible>!$EXP[HasArt] + $EXP[DefaultIcon]</visible>
+					</control>
+				</control>
+			</control>
+		</definition>
+	</include>	
+	<!-- <include name="MiniEPGLayout"> -->
+		<!-- <param name="focused">false</param> -->
+		<!-- <definition> -->
+			<!-- <!-- channel layout --> -->
+			<!-- <control type="group"> -->
+				<!-- <width>395</width> -->
+				<!-- <control type="image"> -->
+					<!-- <width>395</width> -->
+					<!-- <height>83</height> -->
+					<!-- <texture border="3,3,3,3" colordiffuse="grid_border">views/guide/epg_tile.png</texture> -->
+				<!-- </control> -->
+				<!-- <control type="label"> -->
+					<!-- <left>25</left> -->
+					<!-- <width>50</width> -->
+					<!-- <height>81</height> -->
+					<!-- <aligny>center</aligny> -->
+					<!-- <font>Reg22</font> -->
+					<!-- <label>$INFO[ListItem.ChannelNumberLabel]</label> -->
+				<!-- </control> -->
+				<!-- <control type="label"> -->
+					<!-- <left>78</left> -->
+					<!-- <right>120</right> -->
+					<!-- <height>81</height> -->
+					<!-- <aligny>center</aligny> -->
+					<!-- <font>Reg22</font> -->
+					<!-- <label>$INFO[ListItem.ChannelName]</label> -->
+				<!-- </control> -->
+				<!-- <control type="image"> -->
+					<!-- <right>10</right> -->
+					<!-- <width>100</width> -->
+					<!-- <height>81</height> -->
+					<!-- <texture background="true">$INFO[ListItem.Icon]</texture> -->
+					<!-- <aspectratio align="right">keep</aspectratio> -->
+					<!-- <bordersize>10</bordersize> -->
+				<!-- </control> -->
+			<!-- </control> -->
+			<!-- <!-- current programme --> -->
+			<!-- <control type="group"> -->
+				<!-- <left>395</left> -->
+				<!-- <control type="group"> -->
+					<!-- <width>50%</width> -->
+					<!-- <control type="image"> -->
+						<!-- <height>83</height> -->
+						<!-- <texture colordiffuse="cc282828">common/white.jpg</texture> -->
+						<!-- <include>FakeProgressAnimation</include> -->
+					<!-- </control> -->
+					<!-- <control type="image"> -->
+						<!-- <height>83</height> -->
+						<!-- <texture border="3,3,3,3" colordiffuse="grid_border">views/guide/epg_tile.png</texture> -->
+					<!-- </control> -->
+					<!-- <control type="label"> -->
+						<!-- <textoffsetx>25</textoffsetx> -->
+						<!-- <width>75%</width> -->
+						<!-- <height>81</height> -->
+						<!-- <aligny>center</aligny> -->
+						<!-- <font>Reg22</font> -->
+						<!-- <selectedcolor>text_white</selectedcolor> -->
+						<!-- <label fallback="19055">$INFO[ListItem.Title]</label> -->
+					<!-- </control> -->
+					<!-- <control type="label"> -->
+						<!-- <right>0</right> -->
+						<!-- <textoffsetx>25</textoffsetx> -->
+						<!-- <width>25%</width> -->
+						<!-- <height>81</height> -->
+						<!-- <aligny>center</aligny> -->
+						<!-- <align>right</align> -->
+						<!-- <font>Reg22</font> -->
+						<!-- <selectedcolor>text_white</selectedcolor> -->
+						<!-- <label>$INFO[ListItem.EndTime]</label> -->
+					<!-- </control> -->
+				<!-- </control> -->
+				<!-- <control type="group"> -->
+					<!-- <right>0</right> -->
+					<!-- <width>50%</width> -->
+					<!-- <control type="image"> -->
+						<!-- <height>83</height> -->
+						<!-- <texture border="3,3,3,3" colordiffuse="grid_border">views/guide/epg_tile.png</texture> -->
+					<!-- </control> -->
+					<!-- <control type="label"> -->
+						<!-- <textoffsetx>25</textoffsetx> -->
+						<!-- <width>75%</width> -->
+						<!-- <height>81</height> -->
+						<!-- <aligny>center</aligny> -->
+						<!-- <font>Reg22</font> -->
+						<!-- <selectedcolor>text_white</selectedcolor> -->
+						<!-- <label fallback="19055">$INFO[ListItem.NextTitle]</label> -->
+					<!-- </control> -->
+					<!-- <control type="label"> -->
+						<!-- <right>0</right> -->
+						<!-- <textoffsetx>25</textoffsetx> -->
+						<!-- <width>25%</width> -->
+						<!-- <height>81</height> -->
+						<!-- <aligny>center</aligny> -->
+						<!-- <align>right</align> -->
+						<!-- <font>Reg22</font> -->
+						<!-- <selectedcolor>text_white</selectedcolor> -->
+						<!-- <label>$INFO[ListItem.NextEndTime]</label> -->
+					<!-- </control> -->
+				<!-- </control> -->
+			<!-- </control> -->
+		<!-- </definition> -->
+	<!-- </include> -->
 	<!-- PVR -->
 	<include name="PVRPosterLayout">
 		<param name="mainlabel">$VAR[MainListLabel]</param>
